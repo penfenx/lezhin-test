@@ -35,6 +35,10 @@ public class UserService {
 
     @Transactional
     public void deleteUserAndRelatedInfo(int userId) {
+        if(!userRepository.existsById(userId)){
+            throw new IllegalArgumentException("User does not exist!");
+        }
+
         reviewRepository.deleteByUserId(userId);
         viewLogRepository.deleteByUserId(userId);
         userRepository.deleteById(userId);
