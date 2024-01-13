@@ -16,4 +16,6 @@ public class Contents {
     private int coin;
 
     private LocalDate openDate;
+
+    private boolean isAdult;
 }

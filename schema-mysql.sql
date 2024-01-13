@@ -1,45 +1,45 @@
-create table contents
+CREATE DATABASE IF NOT EXISTS lezhin;
+USE lezhin;
+
+CREATE TABLE contents
 (
-ID            int auto_increment
-primary key,
-contents_name varchar(255)         null,
-author        varchar(255)         null,
-coin          int                  null,
-open_date     datetime             null,
-is_adult      tinyint(1) default 0 not null
+    ID            INT AUTO_INCREMENT PRIMARY KEY,
+    contents_name VARCHAR(255) NULL COMMENT '작품명',
+    author        VARCHAR(255) NULL COMMENT '작가',
+    coin          INT NULL COMMENT '금액 (0원이면 무료)',
+    open_date     DATETIME NULL COMMENT '서비스 제공일',
+    is_adult      TINYINT(1) DEFAULT 0 NOT NULL COMMENT '1: 성인작품, 0: 일반작품'
 );
 
-create table review
+CREATE TABLE review
 (
-user_id     int                      not null,
-contents_id int                      not null,
-rating      enum ('LIKE', 'DISLIKE') null,
-comment     varchar(255)             null,
-primary key (user_id, contents_id),
-index idx_contents_id (contents_id),
-index idx_user_id (user_id),
-index idx_rating (rating)
+    user_id     INT NOT NULL COMMENT '유저 ID',
+    contents_id INT NOT NULL COMMENT '작품 ID',
+    rating      ENUM ('LIKE', 'DISLIKE') NULL COMMENT 'LIKE: 좋아요, DISLIKE: 싫어요',
+    comment     VARCHAR(255) NULL COMMENT '댓글',
+    PRIMARY KEY (user_id, contents_id),
+    INDEX idx_contents_id (contents_id),
+    INDEX idx_user_id (user_id),
+    INDEX idx_rating (rating)
 );
 
-create table user
+CREATE TABLE user
 (
-ID            int auto_increment
-primary key,
-user_name     varchar(255)                          null,
-user_email    varchar(255)                          null,
-gender        enum ('MALE', 'FEMALE', 'NON_BINARY') null,
-type          enum ('NORMAL', 'ADULT')              null,
-register_date datetime                              null,
-index idx_register_date (register_date)
+    ID            INT AUTO_INCREMENT PRIMARY KEY,
+    user_name     VARCHAR(255) NULL COMMENT '유저 이름',
+    user_email    VARCHAR(255) NULL COMMENT '유저 이메일',
+    gender        ENUM ('MALE', 'FEMALE', 'NON_BINARY') NULL COMMENT 'MALE: 남성, FEMALE: 여성, NON_BINARY: 비바이너리',
+    type          ENUM ('NORMAL', 'ADULT') NULL COMMENT 'NORMAL: 일반, ADULT: 성인',
+    register_date DATETIME NULL COMMENT '서비스등록일',
+    INDEX idx_register_date (register_date)
 );
 
-create table view_log
+CREATE TABLE view_log
 (
-log_id      int auto_increment
-primary key,
-user_id     int      null,
-contents_id int      null,
-view_date   datetime null,
-index idx_user_id (user_id),
-index idx_contents_id (contents_id)
+    log_id      INT AUTO_INCREMENT PRIMARY KEY,
+    user_id     INT NULL COMMENT '유저 ID',
+    contents_id INT NULL COMMENT '작품 ID',
+    view_date   DATETIME NULL COMMENT '조회 일시',
+    INDEX idx_user_id (user_id),
+    INDEX idx_contents_id (contents_id)
 );
